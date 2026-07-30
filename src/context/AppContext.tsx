@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://sixth-sense1.onrender.com';
-const WS_URL = import.meta.env.VITE_WS_URL || 'wss://sixth-sense1.onrender.com';
+const API_URL = import.meta.env.PROD ? 'https://sixth-sense1.onrender.com' : (import.meta.env.VITE_API_URL || 'http://localhost:3001');
+const WS_URL = import.meta.env.PROD ? 'wss://sixth-sense1.onrender.com' : (import.meta.env.VITE_WS_URL || 'ws://localhost:3001');
 export interface AlertData {
   id: number;
   type: 'critical' | 'warning' | 'info';

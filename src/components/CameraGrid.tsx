@@ -11,7 +11,7 @@ interface CameraGridProps {
 
 import { useApp } from '../context/AppContext';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://sixth-sense1.onrender.com';
+const API_URL = import.meta.env.PROD ? 'https://sixth-sense1.onrender.com' : (import.meta.env.VITE_API_URL || 'http://localhost:3001');
 
 export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: CameraGridProps) {
   const { cameras } = useApp();
