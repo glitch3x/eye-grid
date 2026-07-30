@@ -14,7 +14,7 @@ import { useApp } from '../context/AppContext';
 const API_URL = import.meta.env.PROD ? 'https://sixth-sense1.onrender.com' : (import.meta.env.VITE_API_URL || 'http://localhost:3001');
 
 export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: CameraGridProps) {
-  const { cameras } = useApp();
+  const { cameras, triggerAlert } = useApp();
   const [selectedCamId, setSelectedCamId] = useState<string>('CAM-01');
   const [isPowerOn, setIsPowerOn] = useState(true);
   const [recordings, setRecordings] = useState<any[]>([]);
@@ -40,6 +40,17 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
       fetch(`${API_URL}/api/ai/stop`, { method: 'POST' }).catch(console.error);
     }
   }, [isAiEnabled]);
+
+  // Hackathon Demo: Simulate AI trigger when an image is uploaded and AI is running
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isAiEnabled && demoMediaUrl) {
+      timeout = setTimeout(() => {
+        triggerAlert('weapon', parseInt(selectedCamId.replace('CAM-', '')) || 1, demoMediaUrl, 'Detected masked individual and potential weapon in frame based on custom instruction.');
+      }, 3000); // Trigger after 3 seconds
+    }
+    return () => clearTimeout(timeout);
+  }, [isAiEnabled, demoMediaUrl, selectedCamId, triggerAlert]);
 
   useEffect(() => {
     if (customPrompt !== undefined) {
