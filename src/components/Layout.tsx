@@ -22,7 +22,7 @@ export function Layout({ children, headerTitle = 'Live Command Console', headerR
             </div>
             <div className="hidden lg:block">
               <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent block group-hover:opacity-80 transition-opacity">
-                Sixth Sense
+                Eye Grid
               </span>
               <span className="text-[10px] text-slate-400 font-mono">v1.0.4 EDGE OS</span>
             </div>
