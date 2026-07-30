@@ -31,7 +31,7 @@ export function Login() {
             <Eye className="w-6 h-6" />
           </div>
           <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
-            Sixth Sense
+            Eye Grid
           </span>
         </Link>
 
@@ -104,7 +104,7 @@ export function Login() {
           </form>
           
           <p className="mt-8 text-center text-xs text-slate-400">
-            Protected by Sixth Sense Zero-Trust Architecture.
+            Protected by Eye Grid Zero-Trust Architecture.
           </p>
         </motion.div>
       </div>

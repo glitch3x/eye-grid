@@ -15,8 +15,8 @@ export function Landing() {
             <div className="p-2 bg-primary-500/10 border border-primary-500/30 rounded-xl text-primary-400">
               <Eye className="w-6 h-6" />
             </div>
-            <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-              Sixth Sense
+            <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
+              Eye Grid
             </span>
           </div>
 
@@ -50,9 +50,8 @@ export function Landing() {
           </span>
         </h1>
 
-        <p className="max-w-2xl mx-auto text-slate-400 text-lg md:text-xl mb-10 leading-relaxed">
-          Traditional CCTV only records crimes. Human monitoring is slow and error-prone. 
-          Sixth Sense brings low-latency, multimodal vision intelligence to your existing IP streams using the power of Gemma.
+        <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Eye Grid brings low-latency, multimodal vision intelligence to your existing IP streams using the power of Gemma.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
@@ -144,8 +143,8 @@ export function Landing() {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Proactive Security, Built for SMEs
           </h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
-            Deploy advanced AI without specialized hardware. Sixth Sense works over your current IP setup via lightweight local AI processing.
+          <p className="text-slate-400">
+            Deploy advanced AI without specialized hardware. Eye Grid works over your current IP setup via lightweight local AI processing.
           </p>
         </div>
 
@@ -186,8 +185,8 @@ export function Landing() {
       <section id="architecture" className="py-20 px-6 border-t border-slate-800/80 bg-slate-950/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              How Sixth Sense Works
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">
+              How Eye Grid Works
             </h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               A lightweight, highly scalable architecture designed to run efficiently on edge devices or in the cloud.
@@ -285,9 +284,9 @@ export function Landing() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
             <Eye className="w-5 h-5 text-primary-400" />
-            <span className="font-bold text-white">Sixth Sense</span>
+            <span className="font-bold text-white">Eye Grid</span>
           </div>
-          <p>© 2026 Sixth Sense Technologies Inc. Built for Gemma AI Hackathon.</p>
+          <p>© 2026 Eye Grid Technologies Inc. Built for Gemma AI Hackathon.</p>
         </div>
       </footer>
     </div>
