@@ -11,7 +11,7 @@ export function CameraHub() {
 
   const handleConnectSelected = async () => {
     if (newCameraName && newCameraUrl) {
-      await addCamera({ name: newCameraName, url: newCameraUrl });
+      await addCamera({ name: newCameraName, url: newCameraUrl } as any);
       setIsScanning(false);
       setNewCameraName('');
       setNewCameraUrl('');
