@@ -11,6 +11,8 @@ interface CameraGridProps {
 
 import { useApp } from '../context/AppContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: CameraGridProps) {
   const { cameras } = useApp();
   const [selectedCamId, setSelectedCamId] = useState<string>('CAM-01');
@@ -21,18 +23,17 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<any>(null);
 
-  // Sync AI state with backend
   useEffect(() => {
     if (isAiEnabled) {
-      fetch('http://localhost:3001/api/ai/start', { method: 'POST' }).catch(console.error);
+      fetch(`${API_URL}/api/ai/start`, { method: 'POST' }).catch(console.error);
     } else {
-      fetch('http://localhost:3001/api/ai/stop', { method: 'POST' }).catch(console.error);
+      fetch(`${API_URL}/api/ai/stop`, { method: 'POST' }).catch(console.error);
     }
   }, [isAiEnabled]);
 
   useEffect(() => {
     if (customPrompt !== undefined) {
-      fetch('http://localhost:3001/api/settings', {
+      fetch(`${API_URL}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customPrompt })
@@ -42,14 +43,14 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
 
   // Fetch NVR Recordings Timeline
   useEffect(() => {
-    fetch('http://localhost:3001/api/recordings')
+    fetch(`${API_URL}/api/recordings`)
       .then(r => r.json())
       .then(data => setRecordings(data))
       .catch(console.error);
   }, []);
 
   const handlePtz = (command: string) => {
-    fetch(`http://localhost:3001/api/cameras/CAM-01/ptz`, {
+    fetch(`${API_URL}/api/cameras/CAM-01/ptz`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command })

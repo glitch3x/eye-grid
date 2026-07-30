@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3001';
 export interface AlertData {
   id: number;
   type: 'critical' | 'warning' | 'info';
@@ -101,10 +103,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const fetchData = async () => {
       try {
         const [settingsRes, camerasRes, alertsRes, facesRes] = await Promise.all([
-          fetch('http://localhost:3001/api/settings').catch(() => null),
-          fetch('http://localhost:3001/api/cameras').catch(() => null),
-          fetch('http://localhost:3001/api/alerts').catch(() => null),
-          fetch('http://localhost:3001/api/faces').catch(() => null)
+          fetch(`${API_URL}/api/settings`).catch(() => null),
+          fetch(`${API_URL}/api/cameras`).catch(() => null),
+          fetch(`${API_URL}/api/alerts`).catch(() => null),
+          fetch(`${API_URL}/api/faces`).catch(() => null)
         ]);
 
         if (settingsRes && settingsRes.ok) setSettings(await settingsRes.json());
@@ -123,7 +125,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Connect to backend alerts WebSocket
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3001/alerts');
+    const ws = new WebSocket(`${WS_URL}/alerts`);
     
     ws.onmessage = (event) => {
       try {
@@ -152,7 +154,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     
     // Persist to DB
     try {
-      await fetch('http://localhost:3001/api/settings', {
+      await fetch(`${API_URL}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSettings)
@@ -164,7 +166,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addCamera = async (camera: Partial<CameraData>) => {
     try {
-      const res = await fetch('http://localhost:3001/api/cameras', {
+      const res = await fetch(`${API_URL}/api/cameras`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(camera)
@@ -180,7 +182,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addFace = async (face: Omit<FaceData, 'id' | 'status'>) => {
     try {
-      const res = await fetch('http://localhost:3001/api/faces', {
+      const res = await fetch(`${API_URL}/api/faces`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(face)
