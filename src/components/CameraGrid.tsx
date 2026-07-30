@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Video, Maximize, ZoomIn, Aperture, Power, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, PlayCircle } from 'lucide-react';
+import { Video, Maximize, ZoomIn, Aperture, Power, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, PlayCircle, Upload } from 'lucide-react';
 
 interface CameraGridProps {
   activeAlertCameras: Record<number, string>;
@@ -22,6 +22,16 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<any>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [demoMediaUrl, setDemoMediaUrl] = useState<string | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setDemoMediaUrl(url);
+    }
+  };
 
   useEffect(() => {
     if (isAiEnabled) {
@@ -68,12 +78,23 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
     
     if (isPowerOn && selectedCam) {
       if (selectedCam.url === 'webcam') {
-        // Fallback to local webcam
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(stream => {
-            if (videoRef.current) videoRef.current.srcObject = stream;
-          })
-          .catch(console.error);
+        if (demoMediaUrl) {
+          if (videoRef.current) {
+            videoRef.current.srcObject = null;
+            videoRef.current.src = demoMediaUrl;
+            videoRef.current.loop = true;
+          }
+        } else {
+          // Fallback to local webcam
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+              if (videoRef.current) {
+                videoRef.current.src = '';
+                videoRef.current.srcObject = stream;
+              }
+            })
+            .catch(console.error);
+        }
       } else if (mainCanvasRef.current) {
         // Use RTSP/MP4 via WebSockets
         // @ts-ignore
@@ -94,7 +115,7 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
         playerRef.current = null;
       }
     };
-  }, [selectedCamId, isPowerOn]);
+  }, [selectedCamId, isPowerOn, demoMediaUrl, cameras]);
 
   const selectedCam = cameras.find(c => c.id === selectedCamId);
   const isAlert = !!activeAlertCameras[parseInt((selectedCamId || '1').replace('CAM-', ''))];
@@ -116,13 +137,20 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
       <div className={`relative aspect-video bg-slate-950 rounded-2xl border overflow-hidden shadow-2xl group mb-6 transition-colors duration-300 ${isAlert ? 'border-rose-500 shadow-rose-500/20' : 'border-slate-800'}`}>
         
         {selectedCam?.url === 'webcam' ? (
-          <video 
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className={`w-full h-full object-cover ${!isPowerOn ? 'hidden' : 'block'}`}
-          />
+          demoMediaUrl && demoMediaUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
+            <img 
+              src={demoMediaUrl}
+              className={`w-full h-full object-cover ${!isPowerOn ? 'hidden' : 'block'}`}
+            />
+          ) : (
+            <video 
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={`w-full h-full object-cover ${!isPowerOn ? 'hidden' : 'block'}`}
+            />
+          )
         ) : (
           <canvas 
             ref={mainCanvasRef}
@@ -171,6 +199,21 @@ export function CameraGrid({ activeAlertCameras, isAiEnabled, customPrompt }: Ca
             </div>
             <button onClick={() => handlePtz('down')} className="p-1 hover:bg-slate-700 rounded text-slate-300"><ArrowDown className="w-3 h-3" /></button>
           </div>
+
+          <input 
+            type="file" 
+            accept="video/*,image/*" 
+            ref={fileInputRef} 
+            onChange={handleFileUpload} 
+            className="hidden" 
+          />
+          <button 
+            onClick={() => fileInputRef.current?.click()}
+            className="p-2 hover:bg-slate-800 rounded-lg text-emerald-400 transition-colors"
+            title="Upload Demo Video/Photo"
+          >
+            <Upload className="w-4 h-4" />
+          </button>
 
           <button 
             onClick={() => setIsPowerOn(!isPowerOn)}
