@@ -236,6 +236,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     setActiveAlertCameras(prev => ({ ...prev, [cameraId]: title }));
+
+    const newAlert: AlertData = {
+      id: Date.now(),
+      type: alertType,
+      title: `${title.toUpperCase()} DETECTED`,
+      location: cameras.find(c => parseInt(c.id.replace('CAM-', '')) === cameraId)?.name || `CAM-${String(cameraId).padStart(2, '0')}`,
+      time: new Date().toLocaleTimeString(),
+      cameraId,
+      snapshotBase64,
+      aiReasoning: aiReasoning || 'Detected based on custom instructions.'
+    };
+    
+    setAlerts(prev => [newAlert, ...prev].slice(0, 50));
   };
 
   const clearAlerts = () => {
