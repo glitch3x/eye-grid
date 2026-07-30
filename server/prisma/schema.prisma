@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Camera {
+  id        String   @id
+  name      String
+  status    String   @default("offline")
+  protocol  String   @default("RTSP")
+  res       String   @default("1080p")
+  fps       Int      @default(30)
+  bitrate   String   @default("2.0 Mbps")
+  url       String
+  wsPort    Int
+  createdAt DateTime @default(now())
+}
+
+model Alert {
+  id             Int      @id @default(autoincrement())
+  type           String
+  title          String
+  location       String
+  time           String
+  cameraId       Int
+  snapshotBase64 String?
+  aiReasoning    String?
+  createdAt      DateTime @default(now())
+}
+
+model Face {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  image     String   // Base64 encoded image or URL
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+}
+
+model AccessLog {
+  id        String   @id
+  time      String
+  user      String
+  role      String
+  door      String
+  status    String
+  method    String
+  timestamp Float
+}
+
+model Settings {
+  id                  Int     @id @default(1)
+  apiKey              String  @default("")
+  isAiEnabled         Boolean @default(false)
+  customPrompt        String  @default("")
+  systemBasePrompt    String  @default("You are an expert security analyst AI. You are monitoring a live CCTV feed. Look for unauthorized access, weapons, and suspicious loitering. Do not flag normal employee behavior.")
+  confidenceThreshold Int     @default(85)
+  inferenceFramerate  Int     @default(12)
+  enableAutoSiren     Boolean @default(true)
+  facilityName        String  @default("Main Office Site")
+  timezone            String  @default("UTC")
+  darkMode            Boolean @default(true)
+  webhookUrl          String  @default("")
+}

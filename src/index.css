@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  
+  --color-bg-dark: #09090b; /* Zinc 950 */
+  --color-card-dark: #18181b; /* Zinc 900 */
+  --color-card-border: #27272a; /* Zinc 800 */
+  
+  --color-accent-red: #ef4444; /* Red 500 */
+  --color-accent-red-glow: rgba(239, 68, 68, 0.2);
+
+  @keyframes pulse-red {
+    0%, 100% { 
+      box-shadow: inset 0 0 0px 0px rgba(239, 68, 68, 0); 
+    }
+    50% { 
+      box-shadow: inset 0 0 80px 20px rgba(239, 68, 68, 0.3); 
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-bg-dark text-slate-100 font-sans;
+  }
+}
